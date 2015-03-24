@@ -3,14 +3,15 @@ program gaussian
 ! momentum space
 ! the gaussian function is f(x)=aexp(-(x-b)^2/2*c^2)
 	use,intrinsic :: iso_c_binding
-	include 'fftw3.f03'
 	
 	implicit none
+	include 'fftw3.f03'
+	
 
 	type(C_PTR) :: plan
 
 	real(kind=8),parameter :: a=1.0D0,b=1.0D0,c=1.0D0
-	integer,parameter :: ngrids
+	integer,parameter :: ngrids=1000
 	real(kind=8),parameter :: bleft=-10.0D0,bright=10.0D0
 	! boundary left/right 
 	complex(C_DOUBLE_COMPLEX) :: fx(ngrids),momentum(ngrids)
