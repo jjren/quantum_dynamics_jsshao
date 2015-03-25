@@ -29,7 +29,7 @@ program gaussian
 
 	plan=fftw_plan_dft_1d(ngrids,fx,momentum,FFTW_FORWARD,FFTW_ESTIMATE)
 	call fftw_execute_dft(plan,fx,momentum)
-	call fftw_destory_plan(plan)
+	call fftw_destroy_plan(plan)
 	
 	do i=1,ngrids,1
 		write(*,*) momentum(i)
