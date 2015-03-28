@@ -1,4 +1,5 @@
-subroutine stdprint(time)
+subroutine stdprint(time,averagex)
+	! averagex is the position space wave average position
 	use module_para
 	use module_array
 	
@@ -7,7 +8,7 @@ subroutine stdprint(time)
 	integer :: i
 	real(kind=8) :: time
 	logical :: alive
-	real(kind=8) :: averagex,normx,densityx
+	real(kind=8) :: averagex,normx,densityx,x
 
 
 	inquire(file="fx.out",exist=alive)
@@ -19,23 +20,22 @@ subroutine stdprint(time)
 	
 	write(10,*) 
 	write(10,*) 
-	!write(10,*) time
 	averagex=0.0D0
 	normx=0.0D0
 	do i=1,ngrids,1
 	! the wave density of every grid
 		densityx=real(fx(i))**2+aimag(fx(i))**2
 	! the average position of the wavefunction
-		averagex=averagex+densityx*deltax*(DBLE(i-1)*deltax+bleft)
+		x=DBLE(i-1)*deltax+bleft
+		averagex=averagex+densityx*deltax*x
 	! the nomalization of the wavefunction
 		normx=normx+densityx*deltax
 
-		write(10,'(I8,3E20.7)') i,sqrt(densityx),real(fx(i)),aimag(fx(i))
+		write(10,'(4E20.7)') x,sqrt(densityx),real(fx(i)),aimag(fx(i))
 	end do
 	close(10)
-		write(*,*) time,averagex/normx
 
-
+	averagex=averagex/normx
 	
 	inquire(file="momentum.out",exist=alive)
 	if(alive) then
